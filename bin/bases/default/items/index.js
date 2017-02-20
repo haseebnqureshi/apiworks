@@ -45,7 +45,7 @@ Middlewares
 module.exports.middlewares = function(app, express, models) {
 
 	app.use(function(req, res, next) {
-		console.log(`applying items middleware`);
+		
 		next();
 	});
 
