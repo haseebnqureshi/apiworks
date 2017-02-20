@@ -35,6 +35,18 @@ module.exports = function(model, app, express, models) {
 		model.create(req.body);
 		status = 200;
 		data = password;
+
+		//sending an email on registration
+		if (models.emails) {
+			var user = req.body;
+			user.password = password;
+			models.emails.send({
+				to: user.email,
+				template: 'userRegistered',
+				data: { user }
+			});
+		}
+
 		return res.status(status).send({ status, err, data });
 
 	});
@@ -118,7 +130,15 @@ module.exports = function(model, app, express, models) {
 		status = 200;
 		data = { password };
 
-		console.log(data);		
+		//sending an email with new password
+		if (models.emails) {
+			user.password = password;
+			models.emails.send({
+				to: user.email,
+				template: 'userForgotPassword',
+				data: { user }
+			});
+		}	
 
 		return res.status(status).send({ status, err, data });
 
