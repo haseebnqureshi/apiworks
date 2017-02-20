@@ -1,0 +1,3 @@
+{
+	"deps": "var uploads = require(__dirname + '/uploads');\n{{deps}}"	
+}

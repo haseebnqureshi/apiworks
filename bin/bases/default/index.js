@@ -8,18 +8,22 @@ var express = require('express');
 var app = express();
 var setup = require(__dirname + '/setup');
 var items = require(__dirname + '/items');
+{{deps}}
 
 // models
 var models = {
 	items: items.model()
 };
+{{models}}
 
-// middleware
+// middlewares
 app = setup.middlewares(app, express);
 app = items.middlewares(app, express);
+{{middlewares}}
 
 // routes
 app = items.routes(app, express);
+{{routes}}
 
 // start server
 app.listen(process.env.API_PORT, function() {
