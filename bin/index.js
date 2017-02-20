@@ -78,6 +78,9 @@ inquirer.prompt(questions).then((answers) => {
 	// finally we top things off with a npm install
 	actions.npmInstall(process.env.PWD);
 
+	// and we render our entry main file, just in case there's still any mustache templating
+	actions.render(path.resolve(process.env.PWD, 'index.js'), {});
+
 	console.log(
 		  `\n` + chalk.gray(`| `)
 		+ `\n` + chalk.gray(`| `) + chalk.green.bold(`Success!`)

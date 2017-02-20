@@ -2,6 +2,7 @@
 
 // config
 process.env.API_PORT = 3000;
+{{{config}}}
 
 // deps
 var express = require('express');

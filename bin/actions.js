@@ -11,13 +11,12 @@ var mustache = require('mustache');
 module.exports = {
 
 	addExtra: function(name, from, to) {
+
+		//copy our extra to desired location
 		exec(`cp -r ${from} ${to}`, { stdio: [] });
 
-		//adding our necessary main entry file hooks for our extra
-		var main = fs.readFileSync(`${to}/index.js`, 'utf8');
-		var data = require(`${to}/${name}/install.json`);
-		var rendered = mustache.render(main, data);
-		fs.writeFileSync(`${to}/index.js`, rendered, 'utf8');
+		//then render our copied extra and add hooks to main entry file
+		this.renderExtra(name, from, to);
 
 		//adding some needed deps
 		exec(`bash ${to}/${name}/install.sh`, { stdio: [] });
@@ -43,6 +42,21 @@ module.exports = {
 		return _.filter(fs.readdirSync(dirpath), function(filename) {
 			return !filename.match(/^\./);
 		});
+	},
+
+	render: function(filepath, data) {
+		var template = fs.readFileSync(filepath, 'utf8');
+		var data = data || {};
+		var rendered = mustache.render(template, data);
+		return fs.writeFileSync(filepath, rendered, 'utf8');
+	},
+
+	renderExtra: function(name, from, to) {
+
+		//adding our necessary main entry file hooks for our extra
+		var filepath = `${to}/index.js`;
+		var data = require(`${to}/${name}/install.json`);
+		return this.render(filepath, data);
 	}
 
 };

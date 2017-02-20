@@ -2,19 +2,26 @@
 
 // config
 process.env.API_PORT = 3000;
+{{{config}}}
 
 // deps
 var express = require('express');
 var app = express();
 var setup = require(__dirname + '/setup');
 var html = require(__dirname + '/html');
+{{{deps}}}
+
+// models
+{{{models}}
 
 // middleware
 app = setup.middlewares(app, express);
 app = html.middlewares(app, express);
+{{{middlewares}}}
 
 // routes
 app = html.routes(app, express);
+{{{routes}}}
 
 // start server
 app.listen(process.env.API_PORT, function() {
