@@ -65,6 +65,9 @@ inquirer.prompt(questions).then((answers) => {
 	// first we get our base installed
 	actions.copyDir(`${__dirname}/bases/${answers.base}/*`, process.env.PWD);
 
+	// keep track of our installed extras
+	var installedExtras = {};
+
 	// then we conditionally install any wanted extras
 	_.each(answers, function(answer, key) {
 		var isExtra = key.match(/^extra\_(.*)$/);
@@ -72,14 +75,23 @@ inquirer.prompt(questions).then((answers) => {
 			var extraName = isExtra[1];
 			var dirpath = path.resolve(__dirname, 'extras', extraName);
 
-			//for right now, we're handling intra extra dependencies manually, here
+			// continue only if we've not installed this extra
+			if (_.has(installedExtras, extraName)) { return; }
+
+			// for right now, we're handling intra extra dependencies manually, here
 			switch(extraName) {
 				case 'users':
+
+					// continue only if we've not installed emails
+					if (_.has(installedExtras, 'emails')) { return; }
+
 					actions.addExtra('emails', path.resolve(__dirname, 'extras', 'emails'), process.env.PWD);
+					installedExtras['emails'] = true;
 					break;
 			}
 
 			actions.addExtra(extraName, dirpath, process.env.PWD);
+			installedExtras[extraName] = true;
 		}
 	});
 
