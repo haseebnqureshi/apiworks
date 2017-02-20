@@ -14,25 +14,25 @@ our main express file to decide the order of waterfalling
 any resources we'd want.
 */
 
+
 /*==============
 Dependencies
 ==============*/
 
-var bodyParser = require('body-parser');
+var db = require('nosqldb')('users');
 
 
 /*==============
 Model
 ==============*/
 
+
 /*
 Export model and also set it to var, for easy use inside
 this resource's middlewares and routes.
 */
 
-var model = module.exports.model = {
-
-};
+var model = module.exports.model = db;
 
 
 /*==============
@@ -40,26 +40,6 @@ Middlewares
 ==============*/
 
 module.exports.middlewares = function(app, express, models) {
-
-	// accepting req.body
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({ extended: true }));
-
-	// allowing cors
-	app.use(function(req, res, next) {
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Methods', '*');
-		res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-		next();
-	});
-
-	// allowing preflight responses for local development
-	app.use(function(req, res, next) {
-		if (req.method.toLowerCase() === 'options') {
-			return res.status(200).send();
-		}
-		next();
-	});
 
 	return app;
 
@@ -72,6 +52,8 @@ Routes
 
 module.exports.routes = function(app, express, models) {
 
-	return app;
+	app = require('./public-routes.js')(model, app, express, models);
+
+	return require('./private-routes.js')(model, app, express, models);
 
 };

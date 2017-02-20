@@ -71,6 +71,14 @@ inquirer.prompt(questions).then((answers) => {
 		if (isExtra && answer === true) {
 			var extraName = isExtra[1];
 			var dirpath = path.resolve(__dirname, 'extras', extraName);
+
+			//for right now, we're handling intra extra dependencies manually, here
+			switch(extraName) {
+				case 'users':
+					actions.addExtra('emails', path.resolve(__dirname, 'extras', 'emails'), process.env.PWD);
+					break;
+			}
+
 			actions.addExtra(extraName, dirpath, process.env.PWD);
 		}
 	});

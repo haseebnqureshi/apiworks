@@ -53,6 +53,14 @@ module.exports.middlewares = function(app, express, models) {
 		next();
 	});
 
+	// allowing preflight responses for local development
+	app.use(function(req, res, next) {
+		if (req.method.toLowerCase() === 'options') {
+			return res.status(200).send();
+		}
+		next();
+	});
+
 	return app;
 
 };
