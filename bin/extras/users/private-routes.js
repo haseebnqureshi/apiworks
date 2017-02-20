@@ -27,8 +27,8 @@ module.exports = function(model, app, express, models) {
 			return res.status(status).send({ status, err, data });
 		}
 
-		//once we find an access token, we still have to authenticate it against our db
-		var user = db.findWhere({ accessToken });
+		//once we find an access token, we still have to authenticate it against our model
+		var user = model.findWhere({ accessToken });
 
 		//if we still couldn't come up with a user, let's throw 404
 		if (!user) {
@@ -70,7 +70,7 @@ module.exports = function(model, app, express, models) {
 			var where = { id: req.user.id };
 
 			//making our update
-			db.updateWhere(where, req.body);
+			model.updateWhere(where, req.body);
 			var status = 200;
 			var err = null;
 			var data = {};
