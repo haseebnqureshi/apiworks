@@ -6,21 +6,29 @@ var chalk = require('chalk');
 
 var inquirer = require('inquirer');
 
-var actions = require('./actions.js');
+var path = require('path');
 
 var fs = require('fs');
 
+var actions = require(__dirname + '/actions.js');
+
+var package = require(path.resolve(__dirname, '../package.json'));
+
 console.log(
-	  `\n` + chalk.gray(`| `) + chalk.yellow.bold(`API WORKS`)
-	+ `\n` + chalk.gray(`| `) + chalk.cyan.bold(`REPL for powerfully easy RESTful API's`)
-	+ `\n` + chalk.gray(`| `) + chalk.gray(`Version 0.1.0`)
-	+ `\n` + chalk.gray(`| `)
-	+ `\n` + chalk.gray(`| `) + chalk.white(`crafted by hq (2017)`)
-	+ `\n` + chalk.gray(`| `) + chalk.gray(`twitter.com/_hq, github.com/haseebnqureshi`)
-	+ `\n` + chalk.gray(`| `) + chalk.gray(`made in knoxville, tennessee`)
-	+ `\n` + chalk.gray(`| `)
-	+ `\n` + chalk.gray(`| `) + `Let's get started!`
-	+ `\n` + chalk.gray(`| `) + chalk.gray(`Answer the prompts and in seconds, you'll be up and running.`)
+	`\n` + chalk.gray(`  ===========================================`)
+	+ `\n` + chalk.gray(`  `) + chalk.yellow.bold(`API Works`)
+	+ `\n` + chalk.gray(`  `) + chalk.cyan.bold(package.description)
+	+ `\n` + chalk.gray(`  `) + chalk.gray(package.repository.url)
+	+ `\n` + chalk.gray(`  `) + chalk.gray(`Version ${package.version}`)
+	+ `\n`
+	+ `\n` + chalk.white(`  Crafted by HQ, 2017`)
+	+ `\n` + chalk.white(`  Made in Knoxville, Tennessee`)
+	+ `\n` + chalk.gray(`  twitter.com/_hq`)
+	+ `\n` + chalk.gray(`  github.com/haseebnqureshi`)
+	+ `\n` + chalk.gray(`  ===========================================`)
+	+ `\n`
+	+ `\n` + chalk.yellow.bold(`  Let's get started!`)
+	+ `\n` + chalk.cyan.bold(`  Answer the prompts to get going in seconds.`)
 	+ `\n`
 );
 
@@ -28,7 +36,7 @@ var questions = [
 	{ 
 		name: "base",
 		type: "list",
-		message: chalk.yellow("What API base do you want to start with?"),
+		message: chalk.yellow("Which base do you want to start with?"),
 		choices: _.filter(fs.readdirSync(__dirname + '/bases'), function(filename) {
 			return !filename.match(/^\./);
 		}),
@@ -47,12 +55,12 @@ inquirer.prompt(questions).then((answers) => {
 		+ `\n` + chalk.gray(`| `)
 	);
 
-	actions.copyDir(`${__dirname}/bases/${answers.base}/*`, process.env.PWD);
+	actions.copyDir(`cp -r ${__dirname}/bases/${answers.base} ${process.env.PWD}`);
 
 	console.log(
 		  `\n` + chalk.gray(`| `)
 		+ `\n` + chalk.gray(`| `) + chalk.green.bold(`Success! Scaffolded your new API!`)
-		+ `\n` + chalk.gray(`| `) + chalk.gray.bold(`Thank you for using API WORKS!`)
+		+ `\n` + chalk.gray(`| `) + chalk.gray.bold(`Thank you for using API Works!`)
 		+ `\n` + chalk.gray(`| `)
 		+ `\n`
 	);
