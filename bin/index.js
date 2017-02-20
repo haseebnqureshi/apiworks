@@ -32,19 +32,26 @@ console.log(
 	+ `\n`
 );
 
-var questions = [
-	{ 
-		name: "base",
-		type: "list",
-		message: chalk.yellow("Which base do you want to start with?"),
-		choices: _.filter(fs.readdirSync(__dirname + '/bases'), function(filename) {
-			return !filename.match(/^\./);
-		}),
-		filter: function(value) {
-			return value.toLowerCase();
-		}
+var questions = [];
+
+questions.push({ 
+	name: "base",
+	type: "list",
+	message: chalk.yellow("Which base do you want to start with?"),
+	choices: actions.readdir(__dirname + '/bases'),
+	filter: function(value) {
+		return value.toLowerCase();
 	}
-];
+});
+
+_.each(actions.readdir(__dirname + '/extras'), function(extraName) {
+	questions.push({
+		name: `extra_${extraName}`,
+		type: 'confirm',
+		default: false,
+		message: chalk.gray(` - Want ${chalk.cyan.bold(extraName)} added onto your base?`)
+	});
+});
 
 inquirer.prompt(questions).then((answers) => {
 
@@ -55,7 +62,20 @@ inquirer.prompt(questions).then((answers) => {
 		+ `\n` + chalk.gray(`| `)
 	);
 
+	// first we get our base installed
 	actions.copyDir(`${__dirname}/bases/${answers.base}/*`, process.env.PWD);
+
+	// then we conditionally install any wanted extras
+	_.each(answers, function(answer, key) {
+		var isExtra = key.match(/^extra\_(.*)$/);
+		if (isExtra && answer === true) {
+			var extraName = isExtra[1];
+			var dirpath = path.resolve(__dirname, 'extras', extraName);
+			actions.addExtra(extraName, dirpath, process.env.PWD);
+		}
+	});
+
+	// finally we top things off with a npm install
 	actions.npmInstall(process.env.PWD);
 
 	console.log(
