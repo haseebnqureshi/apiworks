@@ -51,8 +51,8 @@ var prepareEmail = function(To, templateName, data, callback) {
 	var filepathSubject = path.resolve(__dirname, 'templates', `${templateName}.txt`);
 	var filepathBody = path.resolve(__dirname, 'templates', `${templateName}.html`);
 	var templates = {
-		subject: fs.readfileSync(filepathSubject, 'utf8'),
-		body: fs.readfileSync(filepathBody, 'utf8'),
+		subject: fs.readFileSync(filepathSubject, 'utf8'),
+		body: fs.readFileSync(filepathBody, 'utf8'),
 	};
 
 	/*
@@ -121,8 +121,9 @@ module.exports.routes = function(app, express, models) {
 			template: 'example',
 			data: { to },
 			callback: function(err, success) {
+				var err = err ? err.toString() : null;
 				var status = err ? 500 : 200;
-				return res.status(status).send({ status, to });
+				return res.status(status).send({ status, to, err, success });
 			}
 		});
 	});
