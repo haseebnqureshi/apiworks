@@ -60,7 +60,7 @@ Routes
 
 module.exports.routes = function(app, express, models) {
 
-	app.get('/items', function(res, res) {
+	app.get('/items', function(req, res) {
 		var data = [];
 		var status = data.length > 0 ? 200 : 404;
 		res.status(status).send({ status, data });
