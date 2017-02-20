@@ -8,10 +8,12 @@ var inquirer = require('inquirer');
 
 var actions = require(__dirname + '/bin/actions.js');
 
+var package = require(__dirname + '/package.json');
+
 console.log(
 	  `\n` + chalk.gray(`| `) + chalk.yellow.bold(`API WORKS`)
-	+ `\n` + chalk.gray(`| `) + chalk.cyan.bold(`REPL for powerfully easy RESTful API's`)
-	+ `\n` + chalk.gray(`| `) + chalk.gray(`Version 0.1.0`)
+	+ `\n` + chalk.gray(`| `) + chalk.cyan.bold(`${package.description}`)
+	+ `\n` + chalk.gray(`| `) + chalk.gray(`Version ${package.version}`)
 	+ `\n` + chalk.gray(`| `)
 	+ `\n` + chalk.gray(`| `) + chalk.white(`crafted by hq (2017)`)
 	+ `\n` + chalk.gray(`| `) + chalk.gray(`twitter.com/_hq, github.com/haseebnqureshi`)
