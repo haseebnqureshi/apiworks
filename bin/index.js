@@ -83,10 +83,10 @@ inquirer.prompt(questions).then((answers) => {
 				case 'users':
 
 					// continue only if we've not installed emails
-					if (_.has(installedExtras, 'emails')) { return; }
-
-					actions.addExtra('emails', path.resolve(__dirname, 'extras', 'emails'), process.env.PWD);
-					installedExtras['emails'] = true;
+					if (!_.has(installedExtras, 'emails')) { 
+						actions.addExtra('emails', path.resolve(__dirname, 'extras', 'emails'), process.env.PWD);
+						installedExtras['emails'] = true;
+					}
 					break;
 			}
 
