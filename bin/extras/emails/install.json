@@ -1,0 +1,7 @@
+{
+	"config": "process.env.POSTMARK_API_TOKEN = '';\nprocess.env.POSTMARK_FROM = '';\n{{{config}}}",
+	"deps": "var emails = require(__dirname + '/emails');\n{{{deps}}}",
+	"models": "models.emails = emails.model;\n{{{models}}}",
+	"middlewares": "{{{middlewares}}}",
+	"routes": "app = emails.routes(app, express, models);\n{{{routes}}}"
+}

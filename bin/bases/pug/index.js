@@ -12,15 +12,16 @@ var html = require(__dirname + '/html');
 {{{deps}}}
 
 // models
-{{{models}}
+var models = {};
+{{{models}}}
 
 // middleware
-app = setup.middlewares(app, express);
-app = html.middlewares(app, express);
+app = setup.middlewares(app, express, models);
+app = html.middlewares(app, express, models);
 {{{middlewares}}}
 
 // routes
-app = html.routes(app, express);
+app = html.routes(app, express, models);
 {{{routes}}}
 
 // start server

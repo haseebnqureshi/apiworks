@@ -12,18 +12,17 @@ var items = require(__dirname + '/items');
 {{{deps}}}
 
 // models
-var models = {
-	items: items.model()
-};
-{{{models}}
+var models = {};
+models.items = items.model;
+{{{models}}}
 
 // middlewares
-app = setup.middlewares(app, express);
-app = items.middlewares(app, express);
+app = setup.middlewares(app, express, models);
+app = items.middlewares(app, express, models);
 {{{middlewares}}}
 
 // routes
-app = items.routes(app, express);
+app = items.routes(app, express, models);
 {{{routes}}}
 
 // start server

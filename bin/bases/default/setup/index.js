@@ -30,11 +30,7 @@ Export model and also set it to var, for easy use inside
 this resource's middlewares and routes.
 */
 
-var model = module.exports.model = function() {
-	
-	return {
-
-	};
+var model = module.exports.model = {
 
 };
 
