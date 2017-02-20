@@ -8,6 +8,12 @@ module.exports = {
 		return exec(`cp -r ${from} ${to}`, {
 			stdio: []
 		});
+	},
+
+	npmInstall: function(dirpath) {
+		return exec(`cd ${dirpath} && npm install`, {
+			stdio: []
+		});
 	}
 
 };

@@ -55,11 +55,13 @@ inquirer.prompt(questions).then((answers) => {
 		+ `\n` + chalk.gray(`| `)
 	);
 
-	actions.copyDir(`cp -r ${__dirname}/bases/${answers.base} ${process.env.PWD}`);
+	actions.copyDir(`${__dirname}/bases/${answers.base}/*`, process.env.PWD);
+	actions.npmInstall(process.env.PWD);
 
 	console.log(
 		  `\n` + chalk.gray(`| `)
-		+ `\n` + chalk.gray(`| `) + chalk.green.bold(`Success! Scaffolded your new API!`)
+		+ `\n` + chalk.gray(`| `) + chalk.green.bold(`Success!`)
+		+ `\n` + chalk.gray(`| `) + chalk.green.bold(`npm start to get going!`)
 		+ `\n` + chalk.gray(`| `) + chalk.gray.bold(`Thank you for using API Works!`)
 		+ `\n` + chalk.gray(`| `)
 		+ `\n`
