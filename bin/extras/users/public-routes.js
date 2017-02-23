@@ -155,6 +155,9 @@ module.exports = function(model, app, express, models) {
 		status = 200;
 		data = { password };
 
+		//getting our most recent user
+		var user = model.findWhere({ id });
+
 		//sending an email with new password
 		if (models.emails) {
 			user.password = password;
