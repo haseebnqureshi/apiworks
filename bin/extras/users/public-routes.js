@@ -12,17 +12,25 @@ module.exports = function(model, app, express, models) {
 		var err = null;
 		var data = {};
 
-		//setting our primary key to emails, so emails will be unique
-		var id = req.body.id = req.body.email;
+		//check whether we have an email and username
+		var email = req.body.email || null;
+		var username = req.body.username || null;
 
-		//making sure we don't already have that email
-		var user = model.findWhere({ id });
+		//now pulling out user info
+		var userByEmail = model.findWhere({ email });
+		var userByUsername = model.findWhere({ username });
 
-		//email wasn't unique, so we tell the client to try again
-		if (user) {	
+		//if we've found any user, we tell the client to try again
+		if (userByUsername || userByEmail) {	
 			status = 400;
-			err = 'Whoops, that email is taken. Try another.';
+
 			data = null;
+			var errUsername = 'Whoops, that username is taken. Try another.';
+			var errEmail = 'Whoops, that email\'s already registered.';
+
+			if (userByUsername) { err = errUsername; }
+			if (userByEmail) { err = errEmail; }
+
 			return res.status(status).send({ status, err, data });
 		}
 
@@ -61,20 +69,29 @@ module.exports = function(model, app, express, models) {
 		var err = null;
 		var data = {};
 
-		//get our where parameters from req
-		var id = req.body.email;
+		//check whether we have an email and username
+		var email = req.body.email || null;
+		var username = req.body.username || null;
+
+		//get our password from req
 		var password = account.hashPassword(req.body.password);
 
-		//find our user object by email and password
-		var user = model.findWhere({ id, password });
+		//now pulling out user info
+		var userByEmail = model.findWhere({ email, password });
+		var userByUsername = model.findWhere({ username, password });
 
 		//handle a failed user lookup
-		if (!user) { 
+		if (!userByUsername && !userByEmail) { 
 			status = 404;
 			err = 'Couldn\'t find that user.';
 			data = null;
 			return res.status(status).send({ status, err, data });
 		}
+
+		//select our user's id
+		var id;
+		if (userByUsername) { id = userByUsername.id; }
+		if (userByEmail) { id = userByEmail.id; }
 
 		//now generate our access token and save to user object
 		var accessToken = account.generateHash();
@@ -101,14 +118,16 @@ module.exports = function(model, app, express, models) {
 		var err = null;
 		var data = {};
 
-		//get our where parameters from req
-		var id = req.body.email;
+		//check whether we have an email and username
+		var email = req.body.email || null;
+		var username = req.body.username || null;
 
-		//find our user object by email 
-		var user = model.findWhere({ id });
+		//now pulling out user info
+		var userByEmail = model.findWhere({ email });
+		var userByUsername = model.findWhere({ username });
 
 		//handle a failed user lookup
-		if (!user) {
+		if (!userByUsername && !userByEmail) {
 			status = 404;
 			err = 'Couldn\'t find that user.';
 			data = null;
@@ -116,14 +135,20 @@ module.exports = function(model, app, express, models) {
 		}
 
 		/*
-		right now, we just generate a new password and return that back in our payload.
-		but we'll eventually send an optional link via email, allowing the correct user
-		to indeed trigger the password reset.
+		Right now, we just generate a new password and return that 
+		back in our payload. But we'll eventually send an optional 
+		link via email, allowing the correct user to indeed trigger 
+		the password reset.
 		*/
 
 		var password = account.newPassword();
 		var updates = {};
 		updates.password = account.hashPassword(password);
+
+		//select our user's id
+		var id;
+		if (userByUsername) { id = userByUsername.id; }
+		if (userByEmail) { id = userByEmail.id; }
 
 		//making our update
 		model.updateWhere({ id }, updates);
