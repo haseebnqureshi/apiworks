@@ -1,5 +1,5 @@
 {
-	"config": "process.env.USERS_API_AUTH_HEADER = 'X-API-User-Access-Token';\n{{{config}}}",
+	"config": "process.env.CORS_ALLOWED_HEADERS_USER_ACCESS_TOKEN = 'X-Apiworks-User-Access-Token';\n{{{config}}}",
 	"deps": "var users = require(__dirname + '/users');\n{{{deps}}}",
 	"models": "models.users = users.model;\n{{{models}}}",
 	"middlewares": "{{{middlewares}}}",

@@ -15,7 +15,7 @@ var randomatic = require('randomatic');
 
 module.exports = {
 
-	accessTokenHeaderName: process.env.USERS_API_AUTH_HEADER,
+	accessTokenHeaderName: process.env.CORS_ALLOWED_HEADERS_USER_ACCESS_TOKEN,
 
 	hashPassword: function(password) {
 		return hash.sha256().update(password).digest('hex');
