@@ -40,6 +40,25 @@ var model = module.exports.model = {
 Middlewares
 ==============*/
 
+/*
+This dynamic loading allows us to custom set headers and 
+origins from our extras when scaffolding the api.
+*/
+
+var origins = _.filter(process.env, function(value, key) {
+	return key.match(/CORS\_ALLOWED\_ORIGIN/i);
+}).join(',') || '*';
+
+var methods = _.filter(process.env, function(value, key) {
+	return key.match(/CORS\_ALLOWED\_METHODS/i);
+}).join(',') || '*';
+
+var headers = _.filter(process.env, function(value, key) {
+	return key.match(/CORS\_ALLOWED\_HEADERS/i);
+}).join(',') || '*';
+
+console.log('CORS Configuration:', { origins, methods, headers });
+
 module.exports.middlewares = function(app, express, models) {
 
 	// accepting req.body
@@ -48,32 +67,10 @@ module.exports.middlewares = function(app, express, models) {
 
 	// allowing cors
 	app.use(function(req, res, next) {
-
-		/*
-		This dynamic loading allows us to custom set headers and 
-		origins from our extras when scaffolding the api.
-		*/
-
-		var origins = _.filter(process.env, function(value, key) {
-			return key.match(/CORS\_ALLOWED\_ORIGIN/i);
-		}).join(',') || '*';
-
-		var methods = _.filter(process.env, function(value, key) {
-			return key.match(/CORS\_ALLOWED\_METHODS/i);
-		}).join(',') || '*';
-
-		var headers = _.filter(process.env, function(value, key) {
-			return key.match(/CORS\_ALLOWED\_HEADERS/i);
-		}).join(',') || '*';
-
 		res.setHeader('Access-Control-Allow-Origin', origins);
 		res.setHeader('Access-Control-Allow-Methods', methods);
 		res.setHeader('Access-Control-Allow-Headers', headers);
-
-		console.log('res.headers', res.headers);
-
 		next();
-
 	});
 
 	// allowing preflight responses for local development
