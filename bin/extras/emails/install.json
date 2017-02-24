@@ -1,5 +1,5 @@
 {
-	"config": "process.env.POSTMARK_API_TOKEN = '';\nprocess.env.POSTMARK_FROM = '';\n{{{config}}}",
+	"config": "process.env.POSTMARK_API_TOKEN = '';\nprocess.env.POSTMARK_FROM = 'please-enter-postmarkapp.com-api-token';\n{{{config}}}",
 	"deps": "var emails = require(__dirname + '/emails');\n{{{deps}}}",
 	"models": "models.emails = emails.model;\n{{{models}}}",
 	"middlewares": "{{{middlewares}}}",
