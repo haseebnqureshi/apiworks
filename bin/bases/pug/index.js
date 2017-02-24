@@ -2,6 +2,10 @@
 
 // config
 process.env.API_PORT = 3000;
+process.env.CORS_PREFLIGHT_ENABLED = true;
+process.env.CORS_ALLOWED_ORIGIN = '*';
+process.env.CORS_ALLOWED_METHODS = '*';
+process.env.CORS_ALLOWED_HEADERS = 'Content-Type';
 {{{config}}}
 
 // deps
