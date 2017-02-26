@@ -73,16 +73,14 @@ module.exports.middlewares = function(app, express, models) {
 	});
 
 	// allowing preflight responses for local development
-	if (process.env.CORS_PREFLIGHT_ENABLED === true) {
+	app.use(function(req, res, next) {
+		if (!process.env.CORS_PREFLIGHT_ENABLED) { return next(); }
 
-		app.use(function(req, res, next) {
-			if (req.method.toLowerCase() === 'options') {
-				return res.status(200).send();
-			}
-			next();
-		});
-
-	}
+		if (req.method.toLowerCase() === 'options') {
+			return res.status(200).send();
+		}
+		next();
+	});
 
 	return app;
 
