@@ -326,6 +326,9 @@ module.exports = function(model, app, express, models) {
 		var updates = {};
 		updates.password = account.hashPassword(password);
 
+		//we also re-generate our access token for security purposes
+		updates.accessToken = account.generateHash();
+
 		//we update our user with our new password
 		model.updateWhere({ id: user.id }, updates);
 
