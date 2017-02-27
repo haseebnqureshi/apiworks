@@ -27,6 +27,8 @@ var mustache = require('mustache');
 
 var postmark = require('postmark');
 
+var _ = require('underscore');
+
 var client = new postmark.Client(process.env.POSTMARK_API_TOKEN);
 
 var From = process.env.POSTMARK_FROM;
@@ -54,6 +56,15 @@ var prepareEmail = function(To, templateName, data, callback) {
 		subject: fs.readFileSync(filepathSubject, 'utf8'),
 		body: fs.readFileSync(filepathBody, 'utf8'),
 	};
+
+	/*
+	Let's now introduce all process.env settings into our 
+	data object, so that we can print any global settings
+	that may be pertinent to our application.
+	*/
+
+	var data = data || {};
+	data = _.extend(data, process.env);
 
 	/*
 	Next, we take our data and render our found templates.
