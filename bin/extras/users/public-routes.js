@@ -6,6 +6,15 @@ module.exports = function(model, app, express, models) {
 	//there may be multiple spots where we trigger a re-confirm email situation
 	var pleaseConfirmEmail = function(user) {
 
+		//for security, we want to generate a new access token
+		var accessToken = account.generateHash();
+
+		//and save it to our user
+		model.updateWhere({ id: user.id }, { accessToken });
+
+		//update our user with our new access token
+		user.accessToken = accessToken;
+
 		//send our confirmation email
 		if (models.emails) {
 			models.emails.send({
