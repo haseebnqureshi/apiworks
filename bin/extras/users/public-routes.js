@@ -245,6 +245,56 @@ module.exports = function(model, app, express, models) {
 	});
 
 
+	/*
+	User Reset Password
+	*/
+
+	app.get('/reset/user/:access_token', function(req, res, next) {
+		var status;
+		var err = null;
+		var data = {};
+		var message = null;
+
+		//attempting to find user by access token provided
+		var accessToken = req.params.access_token;
+		var user = model.findWhere({ accessToken });
+
+		//if we couldn't find our user, we send back an unconfirmed message
+		if (!user) {
+			status = 404;
+			data = null;
+			err = 'Sorry, could not confirm any user with that link!';
+			message = null;
+			return res.status(status).send({ status, err, message, data });
+		}
+
+		//otherwise, we regenerate our password 
+		var password = account.newPassword();
+		var updates = {};
+		updates.password = account.hashPassword(password);
+
+		//we update our user with our new password
+		model.updateWhere({ id: user.id }, updates);
+
+		//we email our user, notifying them that their password has been changed
+		if (models.emails) {
+			models.emails.send({
+				to: user.email,
+				template: 'changedPassword',
+				data: { user }
+			});
+		}
+
+		//and we return our new password
+		status = 200;
+		err = null;
+		message = `Your password has been reset to "${password}". Please use this password to log back in. Thank you.`;
+		data = account.omitSensitive(user);
+		data.password = password;
+		return res.status(status).send({ status, err, message, data });
+
+	});
+
 	return app;
 
 };
