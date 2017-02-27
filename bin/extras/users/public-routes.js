@@ -39,18 +39,19 @@ module.exports = function(model, app, express, models) {
 		req.body.email = req.body.email;
 		req.body.password = account.hashPassword(password);
 
+		//also generating our access token and save to user object
+		req.body.accessToken = account.generateHash();
+
 		//creating our new user object
 		model.create(req.body);
 		status = 200;
-		data = password;
 
 		//sending an email on registration
 		if (models.emails) {
 			var user = req.body;
-			user.password = password;
 			models.emails.send({
 				to: user.email,
-				template: 'userRegistered',
+				template: 'confirmEmail',
 				data: { user }
 			});
 		}
