@@ -331,6 +331,10 @@ module.exports = function(model, app, express, models) {
 
 		//we email our user, notifying them that their password has been changed
 		if (models.emails) {
+
+			//bringing our new password into our user
+			user.password = password;
+
 			models.emails.send({
 				to: user.email,
 				template: 'resetPassword',
