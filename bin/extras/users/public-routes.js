@@ -129,7 +129,7 @@ module.exports = function(model, app, express, models) {
 			//returning our new password and confirmation
 			status = 200;
 			err = null;
-			message = 'Thank you! We have now confirmed that email address! Your temporary password is "${password}". Please use this password to log in. Thank you.`;
+			message = `Thank you! We have now confirmed that email address! Your temporary password is "${password}". Please use this password to log in. Thank you.`;
 			data = account.omitSensitive(user);
 			data.password = password;
 			return res.status(status).send({ status, err, message, data });
