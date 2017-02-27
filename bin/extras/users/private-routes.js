@@ -69,6 +69,22 @@ module.exports = function(model, app, express, models) {
 			//getting query from our auth'd user
 			var where = { id: req.user.id };
 
+			//checking to see if we have password in our payload
+			if (req.body.password) {
+
+				//if so, let's hash our password and set it to body
+				req.body.password = account.hashPassword(req.body.password);
+
+				//since we're changing our password, we trigger an email
+				if (models.emails) {
+					models.emails.send({
+						to: req.user.email,
+						template: 'changedPassword',
+						data: { user: req.user }
+					});
+				}
+			}
+
 			//making our update
 			model.updateWhere(where, req.body);
 			var status = 200;
