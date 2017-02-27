@@ -135,12 +135,27 @@ module.exports = function(model, app, express, models) {
 			var updates = { emailVerified: true, password: hashedPassword };
 			model.updateWhere({ id:user.id }, updates);
 
+			//setting our data object for our appropriate responses
+			data = account.omitSensitive(user);
+			data.password = password;
+
+			/*
+			We send an email to our user, confirming the validation
+			and sending a temp password.
+			*/
+
+			if (models.emails) {
+				models.emails.send({
+					to: user.email,
+					template: 'emailConfirmed',
+					data: { user: data }
+				});
+			}
+
 			//returning our new password and confirmation
 			status = 200;
 			err = null;
 			message = `Thank you! We have now confirmed that email address! Your temporary password is "${password}". Please use this password to log in. Thank you.`;
-			data = account.omitSensitive(user);
-			data.password = password;
 			return res.status(status).send({ status, err, message, data });
 		}
 
