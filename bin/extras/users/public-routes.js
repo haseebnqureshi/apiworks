@@ -333,7 +333,7 @@ module.exports = function(model, app, express, models) {
 		if (models.emails) {
 			models.emails.send({
 				to: user.email,
-				template: 'changedPassword',
+				template: 'resetPassword',
 				data: { user }
 			});
 		}
