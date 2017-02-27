@@ -1,7 +1,10 @@
 <h2>Hello, {{{user.username}}} -</h2>
-<p>Thank you for confirming your email address! We hope you get the most from {{{APP_NAME}}}. To login, simply click the following link and temporary password:</p>
-<p><strong>{{{APP_URL}}}</strong></p>
-<p><strong>Temporary Password: {{{user.password}}}</strong></p>
+<p>Thank you for confirming your email address! We hope you get the most from {{{APP_NAME}}}. To login, simply click the following link and login with your username and temporary password:</p>
+<p>
+	<strong><a href="{{{APP_URL}}}" target="_blank">{{{APP_URL}}}</a></strong><br>
+	<strong>Username: {{{user.username}}}</strong><br>
+	<strong>Password: {{{user.password}}}</strong>
+</p>
 <p>Thank you for trying us out -<br><strong>{{{APP_NAME}}}</strong></p>
 
 <p><small>You're receiving this email because your email was recently registered with our system. If you think this was an error, back and let us know so that we may correct our system and remove you from any communication going forward. Thank you.</small></p>
