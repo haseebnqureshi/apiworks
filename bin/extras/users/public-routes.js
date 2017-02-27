@@ -65,12 +65,58 @@ module.exports = function(model, app, express, models) {
 
 
 	/*
+	User Confirm Email
+	*/
+
+	app.get('/register/confirm/user/:access_token', function(req, res, next) {
+		var status;
+		var err = null;
+		var data = {};
+		var message = null;
+
+		//attempting to find user by access token provided
+		var accessToken = req.params.access_token;
+		var user = model.findWhere({ accessToken });
+
+		//if we couldn't find our user, we send back an unconfirmed message
+		if (!user) {
+			status = 404;
+			data = null;
+			err = 'Sorry, could not confirm any user with that link!';
+			message = null;
+			return res.status(status).send({ status, err, message, data });
+		}
+
+		//otherwise, check to see if we've already confirmed our user
+		else if (user.emailVerified === true) {
+			status = 200;
+			data = account.omitSensitive(user);
+			err = null;
+			message = 'We have already confirmed that email address!';
+			return res.status(status).send({ status, err, message, data });
+		}
+
+		//or, more typically, we've now confirmed and we update our user
+		else {
+			model.updateWhere({ id:user.id }, { emailVerified: true });
+			status = 200;
+			data = account.omitSensitive(user);
+			err = null;
+			message = 'Thank you! We have now confirmed that email address!';
+			return res.status(status).send({ status, err, message, data });
+		}
+
+	});
+
+
+	/*
 	User Login
 	*/
 
 	app.post('/login/user', function(req, res, next) {
 		var status;
 		var err = null;
+		var message = null;
 		var data = {};
 
 		//check whether we have an email and username
@@ -87,28 +133,50 @@ module.exports = function(model, app, express, models) {
 		//handle a failed user lookup
 		if (!userByUsername && !userByEmail) { 
 			status = 404;
-			err = 'Couldn\'t find that user.';
+			err = 'Sorry! Could not find that user.';
+			message = null;
 			data = null;
-			return res.status(status).send({ status, err, data });
+			return res.status(status).send({ status, err, message, data });
 		}
 
-		//select our user's id
-		var id;
-		if (userByUsername) { id = userByUsername.id; }
-		if (userByEmail) { id = userByEmail.id; }
+		//getting our definitive user object
+		var user = null;
+		if (userByUsername) { user = userByUsername; }
+		if (userByEmail) { user = userByEmail; }
 
-		//now generate our access token and save to user object
+		//checking to see whether the user's email has been confirmed
+		if (!user.emailVerified) {
+
+			//send our confirmation email
+			if (models.emails) {
+				models.emails.send({
+					to: user.email,
+					template: 'confirmEmail',
+					data: { user }
+				});
+			}
+
+			//and return out
+			status = 200;
+			err = null;
+			message = 'Hold on! We need you to first confirm your email address. Please check your email.';
+			data = account.omitSensitive(user);
+			return res.status(200).send({ status, err, message, data });
+		}
+
+		//otherwise, if our email has been verified, we regenerate our access token
 		var accessToken = account.generateHash();
-		model.updateWhere({ id, password }, { accessToken });
 
-		//finally send back our access token
+		//and save our user's new access token
+		model.updateWhere({ id: user.id, password }, { accessToken });
+
+		//now we finally send back our access token with some instructions
 		var headerName = account.accessTokenHeaderName;
-		var instructions = `For any user requests, please include header ${headerName} with value ${accessToken}`;
-		
 		status = 200;
 		err = null;
-		data = { accessToken, headerName, instructions };
-		return res.status(status).send({ status, err, data });
+		message = `For any user requests, please include header ${headerName} with value ${accessToken}`;
+		data = { accessToken, headerName, message };
+		return res.status(status).send({ status, err, message, data });
 
 	});
 
