@@ -42,6 +42,9 @@ module.exports = function(model, app, express, models) {
 		//also generating our access token and save to user object
 		req.body.accessToken = account.generateHash();
 
+		//setting our email verified to false
+		req.body.emailVerified = false;
+
 		//creating our new user object
 		model.create(req.body);
 		status = 200;
