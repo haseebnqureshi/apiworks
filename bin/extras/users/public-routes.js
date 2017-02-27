@@ -4,7 +4,7 @@ var account = require(__dirname + '/account.js');
 module.exports = function(model, app, express, models) {
 
 	//there may be multiple spots where we trigger a re-confirm email situation
-	var confirmUser = function(user) {
+	var pleaseConfirmEmail = function(user) {
 
 		//send our confirmation email
 		if (models.emails) {
@@ -55,10 +55,8 @@ module.exports = function(model, app, express, models) {
 			return res.status(status).send({ status, err, data });
 		}
 
-		//generating our new password and saving our email
-		var password = account.newPassword();
+		//saving our email
 		req.body.email = req.body.email;
-		req.body.password = account.hashPassword(password);
 
 		//also generating our access token and save to user object
 		req.body.accessToken = account.generateHash();
@@ -119,11 +117,21 @@ module.exports = function(model, app, express, models) {
 
 		//or, more typically, we've now confirmed and we update our user
 		else {
-			model.updateWhere({ id:user.id }, { emailVerified: true });
+
+			//creating new password
+			var password = account.newPassword();
+			var hashedPassword = account.hashPassword(password);
+
+			//making updates to our user
+			var updates = { emailVerified: true, password: hashedPassword };
+			model.updateWhere({ id:user.id }, updates);
+
+			//returning our new password and confirmation
 			status = 200;
-			data = account.omitSensitive(user);
 			err = null;
-			message = 'Thank you! We have now confirmed that email address!';
+			message = 'Thank you! We have now confirmed that email address! Your temporary password is "${password}". Please use this password to log in. Thank you.`;
+			data = account.omitSensitive(user);
+			data.password = password;
 			return res.status(status).send({ status, err, message, data });
 		}
 
@@ -144,12 +152,15 @@ module.exports = function(model, app, express, models) {
 		var email = req.body.email || null;
 		var username = req.body.username || null;
 
-		//get our password from req
-		var password = account.hashPassword(req.body.password);
+		/*
+		Now pulling out user info - we don't use our password
+		in case our user needs to verify his email account. For 
+		clarity, no password is generated until an email address
+		has been verified.
+		*/
 
-		//now pulling out user info
-		var userByEmail = model.findWhere({ email, password });
-		var userByUsername = model.findWhere({ username, password });
+		var userByEmail = model.findWhere({ email });
+		var userByUsername = model.findWhere({ username });
 
 		//handle a failed user lookup
 		if (!userByUsername && !userByEmail) { 
@@ -167,15 +178,33 @@ module.exports = function(model, app, express, models) {
 
 		//checking to see whether the user's email has been confirmed
 		if (!user.emailVerified) {
-			var payload = confirmUser(user);
+			var payload = pleaseConfirmEmail(user);
 			return res.status(200).send(payload);
 		}
 
-		//otherwise, if our email has been verified, we regenerate our access token
+		//othwerwise, we ENSURE that our password matches with what's on file
+		var password = account.hashPassword(req.body.password);
+		var userWithPassword = model.findWhere({ id: user.id, password });
+
+		//handling a failed password match
+		if (!userWithPassword) {
+			status = 400;
+			err = 'Sorry! That is not the correct password.';
+			message = null;
+			data = null;
+			return res.status(status).send({ status, err, message, data });
+		}
+
+		/*
+		Finally, we have verified our user is our user. Let's
+		regenerate our user token for a fresh accessToken.
+		*/
+
+		var user = userWithPassword;
 		var accessToken = account.generateHash();
 
-		//and save our user's new access token
-		model.updateWhere({ id: user.id, password }, { accessToken });
+		//let's save our user's new access token
+		model.updateWhere({ id: user.id }, { accessToken });
 
 		//now we finally send back our access token with some instructions
 		var headerName = account.accessTokenHeaderName;
@@ -222,7 +251,7 @@ module.exports = function(model, app, express, models) {
 
 		//checking to see whether the user's email has been confirmed
 		if (!user.emailVerified) {
-			var payload = confirmUser(user);
+			var payload = pleaseConfirmEmail(user);
 			return res.status(200).send(payload);
 		}
 
