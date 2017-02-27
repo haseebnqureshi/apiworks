@@ -3,6 +3,27 @@ var account = require(__dirname + '/account.js');
 
 module.exports = function(model, app, express, models) {
 
+	//there may be multiple spots where we trigger a re-confirm email situation
+	var confirmUser = function(user) {
+
+		//send our confirmation email
+		if (models.emails) {
+			models.emails.send({
+				to: user.email,
+				template: 'confirmEmail',
+				data: { user }
+			});
+		}
+
+		//and return out
+		var status = 200;
+		var err = null;
+		var message = 'Hold on! We need you to first confirm your email address. Please check your email.';
+		var data = account.omitSensitive(user);
+		return { status, err, message, data };
+	};
+
+
 	/*
 	User Registration
 	*/
@@ -68,7 +89,7 @@ module.exports = function(model, app, express, models) {
 	User Confirm Email
 	*/
 
-	app.get('/register/confirm/user/:access_token', function(req, res, next) {
+	app.get('/confirm/user/:access_token', function(req, res, next) {
 		var status;
 		var err = null;
 		var data = {};
@@ -146,22 +167,8 @@ module.exports = function(model, app, express, models) {
 
 		//checking to see whether the user's email has been confirmed
 		if (!user.emailVerified) {
-
-			//send our confirmation email
-			if (models.emails) {
-				models.emails.send({
-					to: user.email,
-					template: 'confirmEmail',
-					data: { user }
-				});
-			}
-
-			//and return out
-			status = 200;
-			err = null;
-			message = 'Hold on! We need you to first confirm your email address. Please check your email.';
-			data = account.omitSensitive(user);
-			return res.status(200).send({ status, err, message, data });
+			var payload = confirmUser(user);
+			return res.status(200).send(payload);
 		}
 
 		//otherwise, if our email has been verified, we regenerate our access token
@@ -188,6 +195,7 @@ module.exports = function(model, app, express, models) {
 	app.post('/forgot/user', function(req, res, next) {
 		var status;
 		var err = null;
+		var message = null;
 		var data = {};
 
 		//check whether we have an email and username
@@ -201,46 +209,38 @@ module.exports = function(model, app, express, models) {
 		//handle a failed user lookup
 		if (!userByUsername && !userByEmail) {
 			status = 404;
-			err = 'Couldn\'t find that user.';
+			err = 'Sorry! Could not find that user.';
+			message = null;
 			data = null;
-			return res.status(status).send({ status, err, data });
+			return res.status(status).send({ status, err, message, data });
 		}
 
-		/*
-		Right now, we just generate a new password and return that 
-		back in our payload. But we'll eventually send an optional 
-		link via email, allowing the correct user to indeed trigger 
-		the password reset.
-		*/
+		//getting our definitive user object
+		var user = null;
+		if (userByUsername) { user = userByUsername; }
+		if (userByEmail) { user = userByEmail; }
 
-		var password = account.newPassword();
-		var updates = {};
-		updates.password = account.hashPassword(password);
+		//checking to see whether the user's email has been confirmed
+		if (!user.emailVerified) {
+			var payload = confirmUser(user);
+			return res.status(200).send(payload);
+		}
 
-		//select our user's id
-		var id;
-		if (userByUsername) { id = userByUsername.id; }
-		if (userByEmail) { id = userByEmail.id; }
-
-		//making our update
-		model.updateWhere({ id }, updates);
-		status = 200;
-		data = { password };
-
-		//getting our most recent user
-		var user = model.findWhere({ id });
-
-		//sending an email with new password
+		//at this point, we send an email with a password reset link
 		if (models.emails) {
-			user.password = password;
 			models.emails.send({
 				to: user.email,
-				template: 'userForgotPassword',
+				template: 'passwordReset',
 				data: { user }
 			});
 		}	
 
-		return res.status(status).send({ status, err, data });
+		//and let's set our payload for a successful return back
+		status = 200;
+		err = null;
+		message = 'A password reset link has been sent to your email on file. Hope that helps!';
+		data = null;
+		return res.status(status).send({ status, err, message, data });
 
 	});
 
