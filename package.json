@@ -1,23 +1,23 @@
 {
   "name": "apiworks",
-  "version": "0.1.8",
-  "description": "REPL for powerfully easy RESTful API's",
+  "version": "1.0.0",
+  "description": "Make Fast & Visual Express Apps & APIs",
   "main": "bin/index.js",
   "bin": {
     "apiworks": "bin/index.js"
   },
   "dependencies": {},
   "keywords": [
-    "repl",
     "rest",
     "api",
-    "cli"
+    "express",
+    "pug",
+    "mvc",
+    "restful"
   ],
   "devDependencies": {
     "chalk": "^1.1.3",
-    "inquirer": "^3.0.1",
     "underscore": "^1.8.3",
-    "mustache": "^2.3.0"
   },
   "scripts": {},
   "repository": {
