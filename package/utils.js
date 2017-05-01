@@ -5,12 +5,16 @@ var chalk = require('chalk');
 
 var moment = require('moment');
 
-module.exports.log = function(color, message) {
+module.exports.log = function(color, message, noTime) {
 
 	var now = moment().format('ddd MMM DD YYYY HH:mm:ss:SSS');
 
-	var message = chalk.gray(`Apiworks: ${now}: `) + chalk[color](message);
+	var time = chalk.gray('Apiworks: ' + now + ': ');
 
-	console.log(message);
+	var message = chalk[color](message);
+
+	var line = noTime !== true ? time + message : message;
+
+	console.log(line);
 
 };
