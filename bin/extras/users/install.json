@@ -1,7 +1,0 @@
-{
-	"config": "process.env.CORS_ALLOWED_HEADERS_USER_ACCESS_TOKEN = 'X-Apiworks-User-Access-Token';\n{{{config}}}",
-	"deps": "var users = require(__dirname + '/users');\n{{{deps}}}",
-	"models": "models.users = users.model;\n{{{models}}}",
-	"middlewares": "{{{middlewares}}}",
-	"routes": "app = users.routes(app, express, models);\n{{{routes}}}"
-}

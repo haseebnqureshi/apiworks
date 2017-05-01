@@ -1,7 +1,0 @@
-{
-	"config": "process.env.APP_NAME = 'Apiworks'; \nprocess.env.APP_URL = 'http://localhost:8080/#!'; \nprocess.env.POSTMARK_API_TOKEN = 'please-enter-postmarkapp.com-api-token'; \nprocess.env.POSTMARK_FROM = 'please-enter-your-from@domain.com';\n{{{config}}}",
-	"deps": "var emails = require(__dirname + '/emails');\n{{{deps}}}",
-	"models": "models.emails = emails.model;\n{{{models}}}",
-	"middlewares": "{{{middlewares}}}",
-	"routes": "app = emails.routes(app, express, models);\n{{{routes}}}"
-}

@@ -2,11 +2,20 @@
   "name": "apiworks",
   "version": "1.0.0",
   "description": "Make Fast & Visual Express Apps & APIs",
-  "main": "bin/index.js",
+  "main": "package/index.js",
   "bin": {
-    "apiworks": "bin/index.js"
+    "apiworks": "package/index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "chalk": "^1.1.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "fs-readdir-recursive": "^1.0.0",
+    "moment": "^2.18.1",
+    "pug": "^2.0.0-beta.12",
+    "underscore": "^1.8.3"
+  },
   "keywords": [
     "rest",
     "api",
@@ -15,11 +24,10 @@
     "mvc",
     "restful"
   ],
-  "devDependencies": {
-    "chalk": "^1.1.3",
-    "underscore": "^1.8.3",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node package/index.js"
   },
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/haseebnqureshi/apiworks"

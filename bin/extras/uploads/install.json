@@ -1,7 +1,0 @@
-{
-	"config": "{{{config}}}",
-	"deps": "var uploads = require(__dirname + '/uploads');\n{{{deps}}}",
-	"models": "{{{models}}}",
-	"middlewares": "app = uploads.middlewares(app, express);\n{{{middlewares}}}",
-	"routes": "app = uploads.routes(app, express);\n{{{routes}}}"
-}
