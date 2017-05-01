@@ -76,6 +76,11 @@ module.exports = function(app, express, db, models, options, log) {
 					order -= 2;
 				}
 
+				//if we have a render, bump it slightly lower than a potential __get
+				if (type === 'render') {
+					order += 2;
+				}
+
 				part = part.replace(/^[0-9]+\_/, '');
 			}
 
@@ -138,7 +143,7 @@ module.exports = function(app, express, db, models, options, log) {
 
 				app.get(route.routerPath, function(req, res) {
 
-					res.render(route.path, { message: 'Hi!' });
+					res.render(route.path, {});
 
 				});
 
