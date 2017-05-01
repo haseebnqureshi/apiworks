@@ -71,6 +71,11 @@ module.exports = function(app, express, db, models, options, log) {
 
 				order += Math.pow(10, i+1);
 
+				//if we have middleware, we bump it slightly higher in our queue
+				if (type === 'middleware') {
+					order -= 2;
+				}
+
 				part = part.replace(/^[0-9]+\_/, '');
 			}
 
@@ -115,7 +120,7 @@ module.exports = function(app, express, db, models, options, log) {
 
 				app[route.method](route.routerPath, callback);
 
-				log('gray', '      request ' + route.routerPath + ' [' + route.method.toUpperCase() + ']');
+				log('gray', '         + request ' + route.routerPath + ' [' + route.method.toUpperCase() + ']');
 
 				break;
 
@@ -125,7 +130,7 @@ module.exports = function(app, express, db, models, options, log) {
 
 				app.use(route.routerPath, callback);
 
-				log('gray', '      middleware ' + route.routerPath);
+				log('gray', '      - middleware ' + route.routerPath);
 
 				break;
 
