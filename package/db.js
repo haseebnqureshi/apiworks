@@ -6,8 +6,6 @@ var read = require('fs-readdir-recursive');
 
 module.exports = function(options) {
 
-	console.log(options);
-
 	var dialect = process.env.DB_DIALECT || 'nosqldb';
 
 	var dbPath = options.dirname + options.folders.db + '/' + dialect;

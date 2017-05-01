@@ -65,14 +65,18 @@ module.exports = function(options) {
 
 	log('yellow', 'Instantiating application...');
 
-	log('yellow', '   Loading Database...');
+		log('yellow', '   Loading database persistence layer...');
 
-	var db = require('./db.js')(options);
+		var db = require('./db.js')(options);
 
-	console.log(db);
+		log('green', '   ...Done!');
 
-	log('green', '   ...Done!');
 
+		log('yellow', '   Loading models abstraction layer...');
+
+		var models = require('./models.js')(options);
+
+		log('green', '   ...Done!');
 
 
 
