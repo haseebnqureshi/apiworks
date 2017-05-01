@@ -88,7 +88,7 @@ module.exports = function(options) {
 
 		log('yellow', '   Loading routes...');
 
-		app = require('./routes.js')(app, express, options, function(line) {
+		app = require('./routes.js')(app, express, db, models, options, function(line) {
 			log('gray', '      ' + line);
 		});
 

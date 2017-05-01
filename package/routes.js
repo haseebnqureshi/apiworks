@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(app, express, options, log) {
+module.exports = function(app, express, db, models, options, log) {
 
 	var routesPath = options.dirname + options.folders.routes;
 
@@ -111,19 +111,21 @@ module.exports = function(app, express, options, log) {
 
 			case 'request':
 
+				var callback = require(route.path)(db, models);
+
+				app[route.method](route.routerPath, callback);
+
 				log('request ' + route.routerPath + ' [' + route.method.toUpperCase() + ']');
-				app[route.method](route.routerPath, function(req, res) {
-					return res.status(200).send();
-				});
 
 				break;
 
 			case 'middleware':
 
+				var callback = require(route.path)(db, models);
+
+				app.use(route.routerPath, callback);
+
 				log('middleware ' + route.routerPath);
-				app.use(route.routerPath, function(req, res, next) {
-					next();
-				});
 
 				break;
 
