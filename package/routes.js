@@ -114,6 +114,8 @@ module.exports = function(app, express, db, models, options, log) {
 	//ensuring routes are sorted by order...
 	routes = _.sortBy(routes, 'order');
 
+	console.log(routes);
+
 	//now creating routes in our app...
 	_.each(routes, function(route) {
 
