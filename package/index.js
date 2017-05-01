@@ -79,6 +79,11 @@ module.exports = function(options) {
 		log('green', '   ...Done!');
 
 
+		log('yellow', '   Enabling static assets...');
+
+		app = require('./static.js')(app, express, options);
+
+		log('green', '   ...Done!');
 
 
 	log('green', '...Done!');
