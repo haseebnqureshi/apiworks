@@ -9,6 +9,6 @@
   "author": "Haseeb Qureshi",
   "license": "MIT",
   "dependencies": {
-    "apiworks": "^1.0.0"
+    "apiworks": "^1.0.1"
   }
 }
