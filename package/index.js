@@ -52,8 +52,6 @@ module.exports = function(options) {
 
 	var express = require('express');
 
-	var pug = require('pug');
-
 	var app = express();
 
 	log('green', '...Done!');
@@ -87,6 +85,13 @@ module.exports = function(options) {
 		log('yellow', '   Enabling body parser and json...');
 
 		app = require('./body.js')(app, express, options);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Enabling pug template rendering...');
+
+		app = require('./pug.js')(app, express, options);
 
 		log('green', '   ...Done!');
 

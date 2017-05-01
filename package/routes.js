@@ -134,6 +134,18 @@ module.exports = function(app, express, db, models, options, log) {
 
 				break;
 
+			case 'render':
+
+				app.get(route.routerPath, function(req, res) {
+
+					res.render(route.path, { message: 'Hi!' });
+
+				});
+
+				log('gray', '      -- render ' + route.routerPath);
+
+				break;
+
 		}
 
 	});
