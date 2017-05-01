@@ -6,7 +6,9 @@ var packageJson = require('../package.json');
 
 var log = utils.log;
 
-module.exports = function(appDirname) {
+module.exports = function(options) {
+
+	var options = options || {};
 
 	/* INFO */
 
@@ -31,7 +33,7 @@ module.exports = function(appDirname) {
 
 	/* CONFIG */
 
-	var dotenvPath = appDirname + '/.env';
+	var dotenvPath = options.dirname + options.dotenv;
 
 	log('yellow', 'Loading config via dotenv...');
 
@@ -50,8 +52,6 @@ module.exports = function(appDirname) {
 
 	var express = require('express');
 
-	var read = require('fs-readdir-recursive');
-
 	var bodyParser = require('body-parser');
 
 	var pug = require('pug');
@@ -64,6 +64,16 @@ module.exports = function(appDirname) {
 	/* INSTANTIATING API */
 
 	log('yellow', 'Instantiating application...');
+
+	log('yellow', '   Loading Database...');
+
+	var db = require('./db.js')(options);
+
+	console.log(db);
+
+	log('green', '   ...Done!');
+
+
 
 
 
