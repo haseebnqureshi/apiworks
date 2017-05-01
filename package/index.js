@@ -1,5 +1,9 @@
 'use strict';
 
+var express = require('express');
+
+var app = express();
+
 var utils = require('./utils');
 
 var packageJson = require('../package.json');
@@ -37,22 +41,9 @@ module.exports = function(options) {
 
 	log('yellow', 'Loading config via dotenv...');
 
-	log('gray', dotenvPath);
+	log('gray', '   Loading from ' + dotenvPath);
 
 	require('dotenv').config({ path: dotenvPath });
-
-	log('green', '...Done!');
-
-
-	/* APIWORKS ENGINE */
-
-	log('yellow', 'Loading apiworks engine...');
-
-	var _ = require('underscore');
-
-	var express = require('express');
-
-	var app = express();
 
 	log('green', '...Done!');
 
@@ -63,28 +54,35 @@ module.exports = function(options) {
 
 		log('yellow', '   Loading database persistence layer...');
 
-		var db = require('./db.js')(options);
+		var db = require('./db.js')(options, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Loading models abstraction layer...');
 
-		var models = require('./models.js')(options);
+		var models = require('./models.js')(options, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Enabling static assets...');
 
-		app = require('./static.js')(app, express, options);
+		app = require('./static.js')(app, express, options, log);
 
 		log('green', '   ...Done!');
 
 
-		log('yellow', '   Enabling body parser and json...');
+		log('yellow', '   Enabling cors policy...');
 
-		app = require('./body.js')(app, express, options);
+		app = require('./cors.js')(app, express, options, log);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Enabling preflight responses...');
+
+		app = require('./preflight.js')(app, express, options, log);
 
 		log('green', '   ...Done!');
 

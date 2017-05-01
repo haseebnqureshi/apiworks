@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(options) {
+module.exports = function(options, log) {
 
 	var modelsPath = options.dirname + options.folders.models;
 
@@ -23,6 +23,12 @@ module.exports = function(options) {
 		if (!models[table]) { models[table] = {}; }
 
 		models[table][method] = require(modelsPath + '/' + path);
+
+	});
+
+	_.each(models, function(methods, table) {
+
+		log('gray', '      Model "' + table + '" {' + _.keys(methods).join(', ') + '}');
 
 	});
 

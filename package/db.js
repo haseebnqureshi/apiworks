@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(options) {
+module.exports = function(options, log) {
 
 	var dialect = process.env.DB_DIALECT || 'nosqldb';
 
@@ -13,8 +13,6 @@ module.exports = function(options) {
 	var methods = read(dbPath);
 
 	var db = {};
-
-	db.connect = require(dbPath + '/connect.js');
 
 	_.each(methods, function(path) {
 
@@ -31,6 +29,14 @@ module.exports = function(options) {
 		db[table][method] = require(dbPath + '/' + path);
 
 	});
+
+	_.each(db, function(methods, table) {
+
+		log('gray', '      Table "' + table + '" {' + _.keys(methods).join(', ') + '}');
+
+	});
+
+	db.connect = require(dbPath + '/connect.js');
 
 	return db;
 
