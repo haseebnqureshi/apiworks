@@ -111,21 +111,21 @@ module.exports = function(app, express, db, models, options, log) {
 
 			case 'request':
 
-				var callback = require(route.path)(db, models);
+				var callback = require(route.path)(db, models, log);
 
 				app[route.method](route.routerPath, callback);
 
-				log('request ' + route.routerPath + ' [' + route.method.toUpperCase() + ']');
+				log('gray', '      request ' + route.routerPath + ' [' + route.method.toUpperCase() + ']');
 
 				break;
 
 			case 'middleware':
 
-				var callback = require(route.path)(db, models);
+				var callback = require(route.path)(db, models, log);
 
 				app.use(route.routerPath, callback);
 
-				log('middleware ' + route.routerPath);
+				log('gray', '      middleware ' + route.routerPath);
 
 				break;
 
