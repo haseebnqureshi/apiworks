@@ -52,8 +52,6 @@ module.exports = function(options) {
 
 	var express = require('express');
 
-	var bodyParser = require('body-parser');
-
 	var pug = require('pug');
 
 	var app = express();
@@ -82,6 +80,20 @@ module.exports = function(options) {
 		log('yellow', '   Enabling static assets...');
 
 		app = require('./static.js')(app, express, options);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Enabling body parser and json...');
+
+		app = require('./body.js')(app, express, options);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Loading routes logger...');
+
+		app = require('./routesLogger.js')(app, express, options, log);
 
 		log('green', '   ...Done!');
 
