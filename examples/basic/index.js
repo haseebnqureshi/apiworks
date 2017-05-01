@@ -1,6 +1,6 @@
 'use strict';
 
-require('../..')({
+var args = {
 	dirname: __dirname,
 	dotenv: '/.env',
 	folders: {
@@ -21,5 +21,7 @@ require('../..')({
 		options: {
 			routeParamPrefix: '-'
 		}
-	},
-});
+	}
+};
+
+require('apiworks')(args);
