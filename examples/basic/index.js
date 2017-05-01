@@ -17,9 +17,6 @@ var args = {
 			delete: '/__delete.js',
 			middleware: '/_middleware.js',
 			render: '/render.pug'
-		},
-		options: {
-			routeParamPrefix: '-'
 		}
 	}
 };
