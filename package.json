@@ -1,6 +1,6 @@
 {
   "name": "apiworks",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Make Fast & Visual Express Apps & APIs",
   "main": "package/index.js",
   "bin": {
@@ -14,7 +14,7 @@
     "fs-readdir-recursive": "^1.0.0",
     "knex": "^0.13.0",
     "moment": "^2.18.1",
-    "nosqldb": "^0.1.5",
+    "nosqldb": "^0.1.6",
     "on-finished": "^2.3.0",
     "pg": "^6.1.5",
     "pug": "^2.0.0-beta.12",

@@ -1,9 +1,11 @@
 'use strict';
 
-module.exports = function(callback /* connection */ ) {
+module.exports = function(callback /* client */) {
 
-	var connection = require('nosqldb');
+	var client = require('nosqldb');
 
-	return callback(connection);
+	client.end = function() {};
+
+	return callback(client);
 
 };

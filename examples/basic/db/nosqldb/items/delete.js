@@ -1,17 +1,23 @@
 'use strict';
 
-module.exports = function(connection, where, callback /* (err, data) */ ) {
+var _ = require('underscore');
 
-	var table = connection('items');
+module.exports = function(client, where, callback /* (err, result) */ ) {
+
+	var callback = callback || function() {};
+
+	var table = client('items', { primaryKey: 'item_id' });
 
 	var row = table.findWhere(where);
 
 	table.delete(where);
 
-	if (callback) {
-		return callback(null, {
-			rows: [row]
-		});
+	if (!row) {
+		row = {};
 	}
+
+	return callback(null, {
+		rows: [row]
+	});
 
 };

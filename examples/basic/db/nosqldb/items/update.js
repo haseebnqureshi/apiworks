@@ -1,17 +1,21 @@
 'use strict';
 
-module.exports = function(connection, where, updates, callback /* (err, data) */ ) {
+module.exports = function(client, where, updates, callback /* (err, result) */ ) {
 
-	var table = connection('items');
+	var callback = callback || function() {};
+
+	var table = client('items', { primaryKey: 'item_id' });
 
 	table.update(where, updates);
 
 	var row = table.findWhere(where);
 
-	if (callback) {
-		return callback(null, {
-			rows: [row]
-		});
+	if (!row) {
+		row = {};
 	}
+
+	return callback(null, {
+		rows: [row]
+	});
 
 };
