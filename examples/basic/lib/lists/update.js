@@ -2,15 +2,11 @@
 
 module.exports = function(db) {
 
-	return function(connection, where, values, callback /* (err, data) */ ) {
+	return function(client, where, values, callback /* (err, result) */ ) {
 
-		db.lists.update(connection, where, values, function(err, data) {
+		var callback = callback || function() {};
 
-			if (callback) {
-				return callback(null, data.rows);
-			}
-			
-		});
+		db.lists.update(client, where, values, callback);
 
 	};
 

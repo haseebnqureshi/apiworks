@@ -2,15 +2,11 @@
 
 module.exports = function(db) {
 
-	return function(connection, where, callback /* (err, data) */ ) {
+	return function(client, values, callback /* (err, result) */ ) {
 
-		db.lists.delete(connection, where, function(err, data) {
+		var callback = callback || function() {};
 
-			if (callback) {
-				return callback(null, data.rows);
-			}
-			
-		});
+		db.lists.delete(client, values, callback);
 
 	};
 

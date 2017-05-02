@@ -4,7 +4,29 @@ module.exports = function(db, lib, log) {
 
 	return function(req, res) {
 
-		return res.status(200).send();
+		db.connect(function(client) {
+
+			lib.lists.all(client, function(err, result) {
+
+				var status = 200;
+				var data = result.rows;
+
+				if (err) {
+					status = 500;
+				}
+
+				if (data.length === 0) {
+					status = 404;
+				}
+
+				return res.status(status).send({
+					status: status,
+					data: data
+				});
+
+			});
+
+		});
 
 	};
 

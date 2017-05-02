@@ -2,15 +2,11 @@
 
 module.exports = function(db) {
 
-	return function(connection, callback /* (err, data) */ ) {
+	return function(client, callback /* (err, result) */ ) {
 
-		db.lists.readAll(connection, function(err, data) {
+		var callback = callback || function() {};
 
-			if (callback) {
-				return callback(null, data.rows);
-			}
-			
-		});
+		db.lists.readAll(client, callback);
 
 	};
 

@@ -2,15 +2,11 @@
 
 module.exports = function(db) {
 
-	return function(connection, values, callback /* (err, data) */ ) {
+	return function(client, values, callback /* (err, result) */ ) {
 
-		db.items.create(connection, values, function(err, data) {
+		var callback = callback || function() {};
 
-			if (callback) {
-				return callback(null, data.rows);
-			}
-			
-		});
+		db.items.create(client, values, callback);
 
 	};
 

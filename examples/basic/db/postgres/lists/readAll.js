@@ -1,15 +1,20 @@
 'use strict';
 
-module.exports = function(connection, callback /* (err, data) */ ) {
+var knex = require('knex')({ client: 'pg' });
 
-	var table = connection('items');
+module.exports = function(client, callback /* (err, result) */ ) {
 
-	var rows = table.all();
+	var callback = callback || function() {};
 
-	if (callback) {
-		return callback(null, {
-			rows: rows
-		});
-	}
+	var text = knex
+		.select('*')
+		.from('lists')
+		.toString();
+
+	client.query(text, function(err, result) {
+
+		return callback(err, result);
+
+	});
 
 };
