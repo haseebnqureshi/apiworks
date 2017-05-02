@@ -13,6 +13,10 @@ module.exports = function(client, values, callback /* (err, result) */ ) {
 
 	client.query(text, function(err, result) {
 
+		if (!result) {
+			result = { rows: [] };
+		}
+
 		return callback(err, result);
 
 	});

@@ -1,6 +1,6 @@
 {
   "name": "apiworks",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Make Fast & Visual Express Apps & APIs",
   "main": "package/index.js",
   "bin": {
