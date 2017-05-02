@@ -1,5 +1,18 @@
 'use strict';
 
+/*
+The following variables are expected in your .env file:
+EXPRESS_PORT=8080
+DB_DIALECT=nosql
+
+The following variables might be expected:
+PG_HOST=
+PG_USER=
+PG_PASSWORD=
+PG_PORT=
+PG_DATABASE=
+*/
+
 var args = {
 	dirname: __dirname,
 	dotenv: '/.env',

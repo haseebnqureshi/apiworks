@@ -9,10 +9,11 @@ Make Fast & Visual Express Apps & APIs
 ### Get Started in Seconds
 In your project folder:
 
-1. ```npm install apiworks --save```
-2. Copy and paste the contents of ```examples/basic``` from Apiworks into your project, including all invisible files!
-3. Modify ```.env``` to your liking;
-4. ```npm start```!
+1. Install and save Apiworks into your project by ```npm install apiworks --save```
+2. Copy and paste the contents of ```examples/basic``` from Apiworks into your project (including all invisible files)
+3. Create a ```.env``` file in your project directory (reference ```index.js``` for more information)
+4. Optional: if you're using Postgres, provide your connection information into your ```.env``` file. To ensure your schema, run ```npm run schema```
+4. Run your project with ```npm start```!
 
 ### Purpose
 Express is an amazing framework. There are an infinite ways in which an Express app can be organized and maintained, which is great. This is where Apiworks comes into play.

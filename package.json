@@ -1,6 +1,6 @@
 {
   "name": "apiworks",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Make Fast & Visual Express Apps & APIs",
   "main": "package/index.js",
   "bin": {
@@ -26,7 +26,9 @@
     "express",
     "pug",
     "mvc",
-    "restful"
+    "restful",
+    "pg",
+    "postgres"
   ],
   "devDependencies": {},
   "scripts": {
