@@ -5,7 +5,7 @@ var args = {
 	dotenv: '/.env',
 	folders: {
 		db: '/db',
-		models: '/models',
+		lib: '/lib',
 		routes: '/routes',
 		static: '/static'
 	},

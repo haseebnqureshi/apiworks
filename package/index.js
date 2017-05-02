@@ -61,9 +61,9 @@ module.exports = function(options) {
 		log('green', '   ...Done!');
 
 
-		log('yellow', '   Loading models abstraction layer...');
+		log('yellow', '   Loading application library...');
 
-		var models = require('./models.js')(options, log);
+		var lib = require('./lib.js')(options, log);
 
 		log('green', '   ...Done!');
 
@@ -105,7 +105,7 @@ module.exports = function(options) {
 
 		log('yellow', '   Loading routes...');
 
-		app = require('./routes.js')(app, express, db, models, options, log);
+		app = require('./routes.js')(app, express, db, lib, options, log);
 
 		log('green', '   ...Done!');
 

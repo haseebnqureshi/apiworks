@@ -45,7 +45,7 @@ module.exports = function(options, log) {
 
 	_.each(db, function(methods, table) {
 
-		log('gray', '      Table "' + table + '" {' + _.keys(methods).join(', ') + '}');
+		log('gray', '      db.' + table + ' = {' + _.keys(methods).join(', ') + '}');
 
 	});
 
