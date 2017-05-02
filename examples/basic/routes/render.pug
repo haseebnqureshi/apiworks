@@ -2,3 +2,19 @@ html
 	head
 	body
 		h1 Hello!
+
+		ul
+			each list in lists
+				li
+					h3 List Object
+					p= 'list_id: ' + list.list_id
+					p= 'list_name: ' + list.list_name
+			
+		ul
+			each item in items
+				li
+					h3 Item Object
+					p= 'item_id: ' + item.item_id
+					p= 'item_name: ' + item.item_name
+					p= 'list_id: ' + item.list_id
+			

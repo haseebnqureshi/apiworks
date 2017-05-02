@@ -8,7 +8,7 @@ types.setTypeParser(20, function(val) {
 	return parseInt(val);
 });
 
-module.exports = function(callback /* client */) {
+module.exports = function(callback /* client */, autoDrain) {
 
 	var client = new pg.Client({
 		host: process.env.PG_HOST,
@@ -21,7 +21,9 @@ module.exports = function(callback /* client */) {
 	//disconnects client when all queries have finished,
 	//or you could use client.end() explicitly.
 
-	client.on('drain', client.end.bind(client));
+	if (autoDrain !== false) {
+		client.on('drain', client.end.bind(client));
+	}
 
 	client.connect();
 
