@@ -1,7 +1,5 @@
 'use strict';
 
-// var pg = require('pg');
-
 module.exports = function(callback) {
 
 	var knex = require('knex')({
@@ -19,32 +17,37 @@ module.exports = function(callback) {
 
 };
 
-// var types = require('pg').types;
+/*
+POTENTIALLY? Use pg's connection to execute command,
+while using Knex to build commands?
 
-// types.setTypeParser(20, function(val) {
-// 	return parseInt(val);
-// });
+var pg = require('pg');
 
+var types = require('pg').types;
 
-// module.exports = function(callback /* connection */ ) {
+types.setTypeParser(20, function(val) {
+	return parseInt(val);
+});
 
-// 	var client = new pg.Client({
-// 		user: process.env.PG_USER,
-// 		password: process.env.PG_PASSWORD,
-// 		database: process.env.PG_DATABASE,
-// 		host: process.env.PG_HOST,
-// 		port: process.env.PG_PORT
-// 	});
+module.exports = function(callback) {
 
-// 	/*
-// 	Disconnects client when all queries have finished,
-// 	or you could use client.end() explicitly.
-// 	*/
+	var client = new pg.Client({
+		user: process.env.PG_USER,
+		password: process.env.PG_PASSWORD,
+		database: process.env.PG_DATABASE,
+		host: process.env.PG_HOST,
+		port: process.env.PG_PORT
+	});
 
-// 	client.on('drain', client.end.bind(client));
+	//disconnects client when all queries have finished,
+	//or you could use client.end() explicitly.
 
-// 	client.connect();
+	client.on('drain', client.end.bind(client));
 
-// 	return callback(client);
+	client.connect();
 
-// };
+	return callback(client);
+
+};
+
+*/
