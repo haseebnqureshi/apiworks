@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(app, express, db, models, options, log) {
+module.exports = function(app, express, db, lib, options, log) {
 
 	var routesPath = options.dirname + options.folders.routes;
 
@@ -121,7 +121,7 @@ module.exports = function(app, express, db, models, options, log) {
 
 			case 'request':
 
-				var callback = require(route.path)(db, models, log);
+				var callback = require(route.path)(db, lib, log);
 
 				app[route.method](route.routerPath, callback);
 
@@ -131,7 +131,7 @@ module.exports = function(app, express, db, models, options, log) {
 
 			case 'middleware':
 
-				var callback = require(route.path)(db, models, log);
+				var callback = require(route.path)(db, lib, log);
 
 				app.use(route.routerPath, callback);
 

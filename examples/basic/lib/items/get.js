@@ -1,13 +1,17 @@
 'use strict';
 
-module.exports = function(connection, db, where, callback /* (err, data) */ ) {
+module.exports = function(db) {
 
-	db.items.read(connection, where, function(err, data) {
+	return function(connection, where, callback /* (err, data) */ ) {
 
-		if (callback) {
-			return callback(null, data.rows);
-		}
-		
-	});
+		db.items.read(connection, where, function(err, data) {
+
+			if (callback) {
+				return callback(null, data.rows);
+			}
+			
+		});
+
+	};
 
 };

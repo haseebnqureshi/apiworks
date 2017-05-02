@@ -54,16 +54,9 @@ module.exports = function(options) {
 
 	log('yellow', 'Instantiating application...');
 
-		log('yellow', '   Loading database persistence layer...');
+		log('yellow', '   Enabling request body and json...');
 
-		var db = require('./db.js')(options, log);
-
-		log('green', '   ...Done!');
-
-
-		log('yellow', '   Loading application library...');
-
-		var lib = require('./lib.js')(options, log);
+		app = require('./body.js')(app, express, options, log);
 
 		log('green', '   ...Done!');
 
@@ -99,6 +92,20 @@ module.exports = function(options) {
 		log('yellow', '   Loading routes logger...');
 
 		app = require('./routesLogger.js')(app, express, options, log);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Loading database persistence layer...');
+
+		var db = require('./db.js')(options, log);
+
+		log('green', '   ...Done!');
+
+
+		log('yellow', '   Loading application library...');
+
+		var lib = require('./lib.js')(options, db, log);
 
 		log('green', '   ...Done!');
 

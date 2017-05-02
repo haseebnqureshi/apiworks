@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(options, log) {
+module.exports = function(options, db, log) {
 
 	var libPath = options.dirname + options.folders.lib;
 
@@ -22,7 +22,7 @@ module.exports = function(options, log) {
 
 		if (!lib[table]) { lib[table] = {}; }
 
-		lib[table][method] = require(libPath + '/' + path);
+		lib[table][method] = require(libPath + '/' + path)(db);
 
 	});
 

@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = function(connection, db, values, callback /* (err, data) */ ) {
+module.exports = function(db) {
 
-	db.lists.create(connection, values, function(err, data) {
+	return function(client, values, callback /* (err, result) */ ) {
 
-		if (callback) {
-			return callback(null, data.rows);
-		}
-		
-	});
+		var callback = callback || function() {};
+
+		db.lists.create(client, values, callback);
+
+	};
 
 };

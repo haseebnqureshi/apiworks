@@ -1,10 +1,28 @@
 'use strict';
 
-module.exports = function(db, models, log) {
+module.exports = function(db, lib, log) {
 
 	return function(req, res) {
 
-		return res.status(200).send();
+		db.connect(function(client) {
+
+			lib.lists.create(client, req.body, function(err, result) {
+
+				var status = 200;
+				var data = result.rows;
+
+				if (err) {
+					status = 500;
+				}
+
+				return res.status(status).send({
+					status: status,
+					data: data
+				});
+
+			});
+
+		});
 
 	};
 
