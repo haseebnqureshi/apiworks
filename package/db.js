@@ -8,6 +8,8 @@ module.exports = function(options, log) {
 
 	var dialect = process.env.DB_DIALECT || 'nosqldb';
 
+	log('gray', '      Using "' + dialect + '" dialect...');
+
 	var dbPath = options.dirname + options.folders.db + '/' + dialect;
 
 	var methods = read(dbPath);
