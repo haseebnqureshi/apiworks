@@ -18,6 +18,19 @@ module.exports = function(options, log) {
 
 		if (path === 'connect.js') { return; }
 
+		if (path === 'schema.js') { 
+
+			if (_.contains(process.argv, '--schema')) {
+				try {
+					require(dbPath + '/schema.js')(log);
+				}
+				catch(err) {}
+			}
+
+			return; 
+
+		}
+
 		var info = path.split('/');
 
 		var table = info[0];
