@@ -4,16 +4,7 @@ module.exports = function(db, lib, log) {
 
 	return function(req, res) {
 
-		console.log(req.params, req.body);
-
-		req.body.list_id = parseInt(req.params.list_id);
-
-		// if (!req.body.list_id) { 
-		// 	return res.status(404).send({
-		// 		status: 404,
-		// 		data: []
-		// 	});
-		// }
+		req.body.list_id = req.params.list_id;
 
 		db.connect(function(client) {
 
