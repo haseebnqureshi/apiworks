@@ -121,7 +121,7 @@ module.exports = function(app, express, db, lib, options, log) {
 
 			case 'request':
 
-				var callback = require(route.path)(db, lib, log);
+				var callback = require(route.path)(express, app, db, lib, log);
 
 				app[route.method](route.routerPath, callback);
 
@@ -131,7 +131,7 @@ module.exports = function(app, express, db, lib, options, log) {
 
 			case 'middleware':
 
-				var callback = require(route.path)(db, lib, log);
+				var callback = require(route.path)(express, app, db, lib, log);
 
 				app.use(route.routerPath, callback);
 

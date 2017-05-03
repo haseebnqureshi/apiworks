@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(db, lib, log) {
+module.exports = function(express, app, db, lib, log) {
 
 	return function(req, res, next) {
 

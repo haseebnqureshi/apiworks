@@ -50,7 +50,7 @@ There are reserved types of files that live inside the application's ```routes``
 ```
 'use strict';
 
-module.exports = function(db, lib, log) {
+module.exports = function(express, app, db, lib, log) {
 
 	return function(req, res) {
 
@@ -65,7 +65,7 @@ module.exports = function(db, lib, log) {
 ```
 'use strict';
 
-module.exports = function(db, lib, log) {
+module.exports = function(express, app, db, lib, log) {
 
 	return function(req, res, next) {
 
@@ -80,7 +80,7 @@ module.exports = function(db, lib, log) {
 ```
 'use strict';
 
-module.exports = function(db, lib, log) {
+module.exports = function(express, app, db, lib, log) {
 
 	return function(req, res) {
 
