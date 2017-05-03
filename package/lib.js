@@ -14,6 +14,9 @@ module.exports = function(options, db, log) {
 
 	_.each(methods, function(path) {
 
+		//we only care about js files
+		if (!path.match(/\.js$/)) { return; }
+
 		var info = path.split('/');
 
 		var table = info[0];
