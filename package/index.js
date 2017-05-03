@@ -122,12 +122,6 @@ module.exports = function(options) {
 
 	/* STARTING API */
 
-	log('yellow', 'Starting application on port ' + (process.env.EXPRESS_PORT || 3000) + '...');
-
-	app.listen(process.env.EXPRESS_PORT || 3000, function() {
-
-		log('green', `...Done!`);
-
-	});
+	return require('./start.js')(app, express, log);
 
 };
