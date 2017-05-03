@@ -2,11 +2,11 @@
 
 var _ = require('underscore');
 
-module.exports = function(app, express, options, log) {
+module.exports = function(settings, express, app, log) {
 
-	var staticPath = options.dirname + options.folders.models;
+	var staticPath = settings.dirname + settings.folders.models;
 
-	var staticOptions = _.extend(options.dirname + options.folders.static);
+	var staticOptions = _.extend(settings.dirname + settings.folders.static);
 
 	log('gray', '      Serving from ' + staticOptions);
 

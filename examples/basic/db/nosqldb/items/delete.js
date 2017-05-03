@@ -2,22 +2,26 @@
 
 var _ = require('underscore');
 
-module.exports = function(client, where, callback /* (err, result) */ ) {
+module.exports = function(settings, express, app, log) {
 
-	var callback = callback || function() {};
+	return function(client, where, callback /* (err, result) */ ) {
 
-	var table = client('items', { primaryKey: 'item_id' });
+		var callback = callback || function() {};
 
-	var row = table.findWhere(where);
+		var table = client('items', { primaryKey: 'item_id' });
 
-	table.delete(where);
+		var row = table.findWhere(where);
 
-	if (!row) {
-		row = {};
-	}
+		table.delete(where);
 
-	return callback(null, {
-		rows: [row]
-	});
+		if (!row) {
+			row = {};
+		}
+
+		return callback(null, {
+			rows: [row]
+		});
+
+	};
 
 };

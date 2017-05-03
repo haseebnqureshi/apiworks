@@ -1,21 +1,25 @@
 'use strict';
 
-module.exports = function(client, where, updates, callback /* (err, result) */ ) {
+module.exports = function(settings, express, app, log) {
 
-	var callback = callback || function() {};
+	return function(client, where, updates, callback /* (err, result) */ ) {
 
-	var table = client('lists', { primaryKey: 'list_id' });
+		var callback = callback || function() {};
 
-	table.update(where, updates);
+		var table = client('lists', { primaryKey: 'list_id' });
 
-	var row = table.findWhere(where);
+		table.update(where, updates);
 
-	if (!row) {
-		row = {};
-	}
+		var row = table.findWhere(where);
 
-	return callback(null, {
-		rows: [row]
-	});
+		if (!row) {
+			row = {};
+		}
+
+		return callback(null, {
+			rows: [row]
+		});
+
+	};
 
 };

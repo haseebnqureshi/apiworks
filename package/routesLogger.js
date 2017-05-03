@@ -2,7 +2,7 @@
 
 var onFinished = require('on-finished');
 
-module.exports = function(app, express, options, log) {
+module.exports = function(settings, express, app, log) {
 
 	app.use('*', function(req, res, next) {
 

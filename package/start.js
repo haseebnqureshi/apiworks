@@ -4,7 +4,7 @@ var https = require('https');
 
 var fs = require('fs');
 
-module.exports = function(app, express, log) {
+module.exports = function(settings, express, app, log) {
 
 	var port = process.env.EXPRESS_PORT || 3000;
 	

@@ -4,7 +4,7 @@ var connect = require('./connect.js');
 
 var knex = require('knex')({ client: 'pg' });
 
-module.exports = function(log) {
+module.exports = function(settings, express, app, log) {
 
 	connect(function(client) {
 		

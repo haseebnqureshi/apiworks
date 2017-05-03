@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(app, express, options, log) {
+module.exports = function(settings, express, app, log) {
 
 	if (process.env.CORS_PREFLIGHT_ENABLED !== false) {
 

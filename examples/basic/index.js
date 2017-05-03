@@ -17,7 +17,7 @@ HTTPS_SSL_KEY_FILEPATH=
 HTTPS_SSL_CERT_FILEPATH=
 */
 
-var args = {
+var settings = {
 	dirname: __dirname,
 	dotenv: '/.env',
 	folders: {
@@ -38,4 +38,4 @@ var args = {
 	}
 };
 
-require('apiworks')(args);
+require('apiworks')(settings);

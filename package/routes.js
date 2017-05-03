@@ -4,9 +4,9 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(app, express, db, lib, options, log) {
+module.exports = function(settings, express, app, db, lib, log) {
 
-	var routesPath = options.dirname + options.folders.routes;
+	var routesPath = settings.dirname + settings.folders.routes;
 
 	/*
 	This method does our heavy lifting. It turns a router filepath
@@ -32,31 +32,31 @@ module.exports = function(app, express, db, lib, options, log) {
 
 		switch (lastPart) {
 
-			case options.routes.files.get:
+			case settings.routes.files.get:
 				type = 'request';
 				method = 'get';
 				break;
 
-			case options.routes.files.post:
+			case settings.routes.files.post:
 				type = 'request';
 				method = 'post';
 				break;
 
-			case options.routes.files.put:
+			case settings.routes.files.put:
 				type = 'request';
 				method = 'put';
 				break;
 
-			case options.routes.files.delete:
+			case settings.routes.files.delete:
 				type = 'request';
 				method = 'delete';
 				break;
 
-			case options.routes.files.middleware:
+			case settings.routes.files.middleware:
 				type = 'middleware';
 				break;
 
-			case options.routes.files.render:
+			case settings.routes.files.render:
 				type = 'render';
 				break;
 
@@ -121,7 +121,7 @@ module.exports = function(app, express, db, lib, options, log) {
 
 			case 'request':
 
-				var callback = require(route.path)(express, app, db, lib, log);
+				var callback = require(route.path)(settings, express, app, db, lib, log);
 
 				app[route.method](route.routerPath, callback);
 
@@ -131,7 +131,7 @@ module.exports = function(app, express, db, lib, options, log) {
 
 			case 'middleware':
 
-				var callback = require(route.path)(express, app, db, lib, log);
+				var callback = require(route.path)(settings, express, app, db, lib, log);
 
 				app.use(route.routerPath, callback);
 

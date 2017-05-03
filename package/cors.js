@@ -21,7 +21,7 @@ var getCorsAllowed = function(type) {
 
 };
 
-module.exports = function(app, express, options, log) {
+module.exports = function(settings, express, app, log) {
 
 	var origin = getCorsAllowed('Origin');
 

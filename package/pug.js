@@ -2,7 +2,7 @@
 
 var pug = require('pug');
 
-module.exports = function(app, express, options) {
+module.exports = function(settings, express, app, log) {
 
 	app.set('view engine', 'pug');
 

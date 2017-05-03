@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(db) {
+module.exports = function(settings, express, app, db, log) {
 
 	return function(client, where, callback /* (err, result) */ ) {
 

@@ -2,7 +2,7 @@
 
 var bodyParser = require('body-parser');
 
-module.exports = function(app, express, options, log) {
+module.exports = function(settings, express, app, log) {
 
 	app.use(bodyParser.json());
 

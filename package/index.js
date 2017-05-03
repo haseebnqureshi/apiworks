@@ -12,9 +12,9 @@ var packageJson = require('../package.json');
 
 var log = utils.log;
 
-module.exports = function(options) {
+module.exports = function(settings) {
 
-	var options = options || {};
+	var settings = settings || {};
 
 	/* INFO */
 
@@ -39,7 +39,7 @@ module.exports = function(options) {
 
 	/* CONFIG */
 
-	var dotenvPath = options.dirname + options.dotenv;
+	var dotenvPath = settings.dirname + settings.dotenv;
 
 	log('yellow', 'Loading config via dotenv...');
 
@@ -56,63 +56,63 @@ module.exports = function(options) {
 
 		log('yellow', '   Enabling request body and json...');
 
-		app = require('./body.js')(app, express, options, log);
+		app = require('./body.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Enabling static assets...');
 
-		app = require('./static.js')(app, express, options, log);
+		app = require('./static.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Enabling cors policy...');
 
-		app = require('./cors.js')(app, express, options, log);
+		app = require('./cors.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Enabling preflight responses...');
 
-		app = require('./preflight.js')(app, express, options, log);
+		app = require('./preflight.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Enabling pug template rendering...');
 
-		app = require('./pug.js')(app, express, options);
+		app = require('./pug.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Loading routes logger...');
 
-		app = require('./routesLogger.js')(app, express, options, log);
+		app = require('./routesLogger.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Loading database persistence layer...');
 
-		var db = require('./db.js')(options, log);
+		var db = require('./db.js')(settings, express, app, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Loading application library...');
 
-		var lib = require('./lib.js')(options, db, log);
+		var lib = require('./lib.js')(settings, express, app, db, log);
 
 		log('green', '   ...Done!');
 
 
 		log('yellow', '   Loading routes...');
 
-		app = require('./routes.js')(app, express, db, lib, options, log);
+		app = require('./routes.js')(settings, express, app, db, lib, log);
 
 		log('green', '   ...Done!');
 
@@ -122,6 +122,6 @@ module.exports = function(options) {
 
 	/* STARTING API */
 
-	return require('./start.js')(app, express, log);
+	return require('./start.js')(settings, express, app, log);
 
 };

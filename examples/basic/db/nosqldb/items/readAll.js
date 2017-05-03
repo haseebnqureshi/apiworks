@@ -1,19 +1,23 @@
 'use strict';
 
-module.exports = function(client, callback /* (err, result) */ ) {
+module.exports = function(settings, express, app, log) {
 
-	var callback = callback || function() {};
+	return function(client, callback /* (err, result) */ ) {
 
-	var table = client('items', { primaryKey: 'item_id' });
+		var callback = callback || function() {};
 
-	var rows = table.all();
+		var table = client('items', { primaryKey: 'item_id' });
 
-	if (!rows) {
-		rows = [];
-	}
+		var rows = table.all();
 
-	return callback(null, {
-		rows: rows
-	});
+		if (!rows) {
+			rows = [];
+		}
+
+		return callback(null, {
+			rows: rows
+		});
+
+	};
 
 };

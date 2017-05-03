@@ -4,13 +4,13 @@ var _ = require('underscore');
 
 var read = require('fs-readdir-recursive');
 
-module.exports = function(options, log) {
+module.exports = function(settings, express, app, log) {
 
 	var dialect = process.env.DB_DIALECT || 'nosqldb';
 
 	log('gray', '      Using "' + dialect + '" dialect...');
 
-	var dbPath = options.dirname + options.folders.db + '/' + dialect;
+	var dbPath = settings.dirname + settings.folders.db + '/' + dialect;
 
 	var methods = read(dbPath);
 
@@ -24,7 +24,7 @@ module.exports = function(options, log) {
 
 			if (_.contains(process.argv, '--schema')) {
 				try {
-					require(dbPath + '/schema.js')(log);
+					require(dbPath + '/schema.js')(express, app, log);
 				}
 				catch(err) {}
 			}
@@ -41,7 +41,7 @@ module.exports = function(options, log) {
 
 		if (!db[table]) { db[table] = {}; }
 
-		db[table][method] = require(dbPath + '/' + path);
+		db[table][method] = require(dbPath + '/' + path)(express, app, log);
 
 	});
 

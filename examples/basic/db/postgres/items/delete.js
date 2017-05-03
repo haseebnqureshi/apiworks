@@ -2,23 +2,27 @@
 
 var knex = require('knex')({ client: 'pg' });
 
-module.exports = function(client, where, callback /* (err, result) */ ) {
+module.exports = function(settings, express, app, log) {
 
-	var callback = callback || function() {};
+	return function(client, where, callback /* (err, result) */ ) {
 
-	var text = knex('items')
-		.where(where)
-		.del()
-		.toString();
+		var callback = callback || function() {};
 
-	client.query(text, function(err, result) {
+		var text = knex('items')
+			.where(where)
+			.del()
+			.toString();
 
-		if (!result) {
-			result = { rows: [] };
-		}
+		client.query(text, function(err, result) {
 
-		return callback(err, result);
+			if (!result) {
+				result = { rows: [] };
+			}
 
-	});
+			return callback(err, result);
+
+		});
+
+	};
 
 };
